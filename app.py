@@ -1,10 +1,11 @@
-from flask import Flask, jsonify, after_this_request, g
+from flask import Flask, jsonify, g
 from flask_login import LoginManager
 import os
 from dotenv import load_dotenv
 load_dotenv()
 from flask_cors import CORS
 from resources.users import users
+from resources.records import records
 import models
 
 DEBUG = True
@@ -37,7 +38,10 @@ def after_request(response):
 
 CORS(users, origins = ['http://localhost:3000'], supports_credentials = True)
 
+CORS(records, origin = ['https:localhost:3000'], supports_credentials = True)
+
 app.register_blueprint(users, url_prefix = '/users')
+app.register_blueprint(records, url_prefix = '/records')
 
 @app.route('/')
 def hello():

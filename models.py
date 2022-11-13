@@ -17,8 +17,25 @@ class User(UserMixin, Model):
     class Meta:
         database = DATABASE
 
+class Record(Model):
+    name = CharField()
+    artist = CharField()
+    artwork_url = CharField()
+    release_year = IntegerField()
+    pressing_year = IntegerField()
+    genre = CharField()
+    record_label = CharField()
+    catalog_num = CharField()
+    country = CharField()
+    favorite = BooleanField(default = False)
+    owner = ForeignKeyField(User, backref='records')
+    created_at = DateTimeField(default = datetime.datetime.now)
+
+    class Meta:
+        database = DATABASE
+
 def initialize():
     DATABASE.connect()
 
-    DATABASE.create_tables([User], safe = True)
+    DATABASE.create_tables([User, Record], safe = True)
     DATABASE.close()

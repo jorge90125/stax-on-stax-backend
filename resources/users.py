@@ -7,6 +7,7 @@ from playhouse.shortcuts import model_to_dict
 
 users = Blueprint('users', 'users')
 
+# REGISTER ROUTE
 @users.route('/register', methods = ['POST'])
 def register():
     payload = request.get_json()
@@ -27,6 +28,7 @@ def register():
 
         return jsonify(data = user_dict, status = {'code': 201, 'message': 'Success'}), 201
 
+# LOGIN ROUTE
 @users.route('/login', methods = ['POST'])
 def login():
     payload = request.get_json()
@@ -42,6 +44,7 @@ def login():
     except models.DoesNotExist:
         return jsonify(data = {}, status = {'code': 401, 'message': 'Username or password did not match!'}), 401
 
+# CHECK LOGGED IN USER
 @users.route('/logged_in_user', methods = ['GET'])
 def get_logged_in_user():
     print(current_user)
@@ -51,6 +54,7 @@ def get_logged_in_user():
         data = user_dict
         ), 200
 
+# LOGOUT ROUTE
 @users.route('/logout', methods = ['GET'])
 def logout():
     logout_user()
@@ -60,6 +64,7 @@ def logout():
         status = 200
     ), 200
 
+# SHOW USERS ROUTE
 @users.route('/', methods = ['GET'])
 def get_users():
     user_dicts = [model_to_dict(user) for user in models.User]
