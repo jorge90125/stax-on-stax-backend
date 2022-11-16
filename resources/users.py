@@ -75,3 +75,16 @@ def get_users():
         'message': f'Successfully found {len(user_dicts)} users.',
         'status': 200
     }), 200
+
+# SHOW A USERS STAX ROUTE
+@users.route('/<user>/records', methods = ['GET'])
+def get_users_records(user):
+    user_int = int(user)
+    user_records_dicts = [model_to_dict(record) for record in models.Record if record.owner.id == user_int]
+    for record in user_records_dicts:
+        record['owner'].pop('password')
+    return jsonify({
+        'data': user_records_dicts,
+        'message': f'Successfully found {len(user_records_dicts)} records.',
+        'status': 200
+    }),200
