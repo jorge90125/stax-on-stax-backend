@@ -14,7 +14,12 @@ def register():
     payload['email'] = payload['email'].lower()
     try:
         models.User.get(models.User.email == payload['email'])
-        return jsonify(data = {}, status = {'code': 401, 'message': 'A user with that email already exists!'}),401
+        return jsonify(
+            data = {},
+            status = {
+                'code': 401,
+                'message': 'A user with that email already exists!'
+            }),401
     except models.DoesNotExist:
         payload['password'] = generate_password_hash(payload['password'])
         user = models.User.create(**payload)
@@ -26,7 +31,12 @@ def register():
         
         del user_dict['password']
 
-        return jsonify(data = user_dict, status = {'code': 201, 'message': 'Success'}), 201
+        return jsonify(
+            data = user_dict,
+            status = {
+                'code': 201,
+                'message': 'Success'
+            }), 201
 
 # LOGIN ROUTE
 @users.route('/login', methods = ['POST'])
@@ -38,11 +48,26 @@ def login():
         if(check_password_hash(user_dict['password'], payload['password'])):
             del user_dict['password']
             login_user(user)
-            return jsonify(data = user_dict, status = {'code': 200, 'message': 'User successfully logged in!'}), 200
+            return jsonify(
+                data = user_dict,
+                status = {
+                    'code': 200,
+                    'message': 'User successfully logged in!'
+                }), 200
         else:
-            return jsonify(data = {}, status = {'code': 401, 'message': 'Username or password did not match!'}), 401
+            return jsonify(
+                data = {},
+                status = {
+                    'code': 401,
+                    'message': 'Username or password did not match!'    
+                }), 401
     except models.DoesNotExist:
-        return jsonify(data = {}, status = {'code': 401, 'message': 'Username or password did not match!'}), 401
+        return jsonify(
+            data = {},
+            status = {
+                'code': 401,
+                'message': 'Username or password did not match!'
+            }), 401
 
 # CHECK LOGGED IN USER
 @users.route('/logged_in_user', methods = ['GET'])
