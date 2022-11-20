@@ -48,8 +48,11 @@ def create_records():
 def handle_one_record(id):
     if request.method == 'GET':
         record = models.Record.get_by_id(id)
+        # print(record)
+        data = model_to_dict(record)
+        data['owner'].pop('password')
         return jsonify(
-            data = model_to_dict(record),
+            data = data,
             message = 'Successfully showing record!',
             status = 200
         ), 200
